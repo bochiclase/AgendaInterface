@@ -1,11 +1,14 @@
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.*;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
@@ -19,9 +22,11 @@ public class MainWindow extends JFrame implements KeyListener {
 	protected static JTextArea salidaCMD;
 	protected static JTextField entrada = new JTextField();
 	private static final long serialVersionUID = 1L;
-	private Image foto;
 	
 	public MainWindow() {
+		Font font;
+		InputStream in = getClass().getResourceAsStream("/font.ttf");
+		font = Font.createFont(Font.PLAIN, in).deriveFont(30f);
 		Toolkit ventana = Toolkit.getDefaultToolkit();
 		Dimension tamano = ventana.getScreenSize();
 		int altura = tamano.height;
@@ -36,9 +41,15 @@ public class MainWindow extends JFrame implements KeyListener {
 		
 		JPanel panelInf = new JPanel(new GridLayout(1, 1));
 		JPanel panelSup= new JPanel();
+		
+		panelSup.setBackground(new Color(65,245,231,100));
+		panelInf.setBackground(new Color(65,245,231,100));
+		
+		
+		
 		Agendas agenda = new Agendas();
 		agenda.ejecutar(entrada.getText());
- 
+		
 	
 		
 		panelInf.add(entrada);
@@ -57,13 +68,8 @@ public class MainWindow extends JFrame implements KeyListener {
 		scrollPane.setViewportView(salidaCMD);
 		add(panelSup, BorderLayout.NORTH);
 		salidaCMD.setEditable(false);
+		salidaCMD.setBackground(new Color(200,255,251,90));
 		
-		
-		 try{
-	            foto = ImageIO.read(new File("/RES/fondo_TexField.jpg"));
-	        } catch(IOException e) {
-	        	salidaCMD.append(e.toString());
-	        }
 		
 		 pack();
 		 setLocationRelativeTo(null);
@@ -73,7 +79,7 @@ public class MainWindow extends JFrame implements KeyListener {
 	public void mostrarAyuda() {
 		
 		salidaCMD.append(System.getProperty("line.separator")); 
-		salidaCMD.append("øQUE DESEA HACER?");
+		salidaCMD.append("¿QUE DESEA HACER?");
 		salidaCMD.append(System.getProperty("line.separator")); 
 		salidaCMD.append("Para introducir nombre nombre-telefono");
 		salidaCMD.append(System.getProperty("line.separator")); 
