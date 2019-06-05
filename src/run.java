@@ -6,5 +6,6 @@ public class run {
 	
 		MainWindow empezar = new MainWindow();
 		empezar.mostrarAyuda();
+		empezar.setVisible(true);
 	}
 }

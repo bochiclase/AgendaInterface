@@ -2,7 +2,10 @@ import java.util.NoSuchElementException;
 import java.util.Scanner;
 import java.util.TreeMap;
 
-public class Agendas extends TreeMap<String, String> {
+
+public class Agendas extends TreeMap<String, String>{
+
+	private static final long serialVersionUID = 1L;
 
 	public String ejecutar(String cmd) {
 		Scanner s = new Scanner(cmd);
@@ -10,19 +13,23 @@ public class Agendas extends TreeMap<String, String> {
 		String mensaje = "";
 		String token;
 		String nombre = null;
+		
 		while (estado != 5) {
 			switch (estado) {
 			case 0:
 				try {
+					mensaje = cmd;
 					token = s.skip("buscar|\\p{L}+(\\s+\\p{L}+)*").match().group();
-					if (token.equals("buscar"))
+					if (token.equals("buscar")) {
 						estado = 2;
+						
+					}
 					else {
 						nombre = token;
 						estado = 1;
 					}
 				} catch (NoSuchElementException e) {
-					mensaje = "Se esperaba 'buscar' o 'fin' o un nombre";
+					mensaje = "Se esperaba 'buscar' o un nombre";
 					estado = 5;
 				}
 				break;
@@ -47,10 +54,18 @@ public class Agendas extends TreeMap<String, String> {
 			case 3:
 				try {
 					token = s.skip("\\d{9}").match().group();
+					if (containsKey(nombre)) {
+						mensaje = nombre + " Ya esta esta en la agenda, se modificaran los nuevos datos ";
+						put(nombre,token);
+					}
+					else {
 					put(nombre, token);
 					estado = 5;
+					mensaje = "El telefono de " + nombre + " fue GUARDADO CORRECTAMENTE ";
+					}
+					
 				}catch (NoSuchElementException e) {
-					mensaje = "Se esperaba un telÃˆfono";
+					mensaje = "Se esperaba un teléfono";
 					estado = 5;
 				}
 				break;
