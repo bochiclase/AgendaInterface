@@ -1,4 +1,5 @@
 import java.awt.BorderLayout;
+import java.awt.Button;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontFormatException;
@@ -7,12 +8,16 @@ import java.awt.event.*;
 import java.io.IOException;
 import java.io.InputStream;
 
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
+
+
 public class MainWindow extends JFrame implements KeyListener, ComponentListener {
 
 	private static final long serialVersionUID = 1L;
@@ -45,12 +50,31 @@ public class MainWindow extends JFrame implements KeyListener, ComponentListener
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+		
+		
 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLayout(new BorderLayout());
 		setTitle("Adrián - Interfaz Grafica");
 		addComponentListener(this);
-				
+		
+		ImageIcon iconGuardar = new ImageIcon("/Recursos/guardar.png");
+		ImageIcon iconCargar = new ImageIcon("/Recursos/cargar.png");
+		
+		JPanel panelBotton = new JPanel();
+		
+		JButton botonCopiar = new JButton(iconGuardar);
+		JButton botonCargar = new JButton(iconCargar);
+		botonCopiar.setActionCommand("botonCopiar");
+		botonCargar.setActionCommand("botonCargar");
+		//botonCopiar.addActionListener(this);
+		//botonCargar.addActionListener(this);
+			panelBotton.add(botonCopiar);
+			panelBotton.add(botonCargar);
+			
+	
+			
+			
 		JPanel panelInf = new JPanel(new GridLayout(1, 1));
 		panelSup= new JPanel(new GridLayout(1, 1));
 		
@@ -65,7 +89,7 @@ public class MainWindow extends JFrame implements KeyListener, ComponentListener
 		
 		panelInf.add(entrada);
 		
-		salidaCMD = new JTextArea(20, 70);
+		salidaCMD = new JTextArea(30,35);
 		salidaCMD.setFont(fontsup);
 		JScrollPane scrollPane = new JScrollPane(salidaCMD);
 		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
@@ -74,7 +98,8 @@ public class MainWindow extends JFrame implements KeyListener, ComponentListener
 		salidaCMD.setEditable(false);
 		salidaCMD.setBackground(new Color(200,255,251,90));
 		
-		add(panelSup, BorderLayout.NORTH);
+		add(panelBotton,BorderLayout.NORTH);
+		add(panelSup, BorderLayout.CENTER);
 		add(panelInf,BorderLayout.SOUTH);
 		
 		 pack();
@@ -82,24 +107,26 @@ public class MainWindow extends JFrame implements KeyListener, ComponentListener
 			
 	}
 	
+
+
 	public void mostrarAyuda() {
 		
-		salidaCMD.append("#############  AGENDA DE ADRIAN ##########");
+		salidaCMD.append("##################  AGENDA DE ADRIAN ###############");
 		salidaCMD.append(System.getProperty("line.separator"));
-		salidaCMD.append("#################### V4.0 ####################");
+		salidaCMD.append("######################### GUI ########################");
 		salidaCMD.append(System.getProperty("line.separator")); 
 		salidaCMD.append(System.getProperty("line.separator"));
 		salidaCMD.append("¿QUE DESEA HACER?");
 		salidaCMD.append(System.getProperty("line.separator")); 
-		salidaCMD.append("Para introducir nombre nombre-telefono");
+		salidaCMD.append("Para INTRODUCIR un CONTACTO      nombre-telefono");
 		salidaCMD.append(System.getProperty("line.separator")); 
-		salidaCMD.append("Para buscar un n˙mero buscar:nombre");
+		salidaCMD.append("Para BUSCAR un NÚMERO                buscar:nombre");
 		salidaCMD.append(System.getProperty("line.separator")); 
-		salidaCMD.append("Para borrar un n˙mero borrar:numero");
+		salidaCMD.append("Para BORRAR un NÚMERO                borrar:numero");
 		salidaCMD.append(System.getProperty("line.separator")); 
-		salidaCMD.append("Para guardar la Agenda guardar:ruta");
+		salidaCMD.append("Para GUARDAR la AGENDA                guardar:ruta");
 		salidaCMD.append(System.getProperty("line.separator")); 
-		salidaCMD.append("Para cargar la Agenda cargar:ruta");
+		salidaCMD.append("Para CARGAR la AGENDA                  cargar:ruta");
 		salidaCMD.append(System.getProperty("line.separator")); 
 		salidaCMD.append("Introduce");
 		salidaCMD.append(System.getProperty("line.separator"));
@@ -123,6 +150,18 @@ public class MainWindow extends JFrame implements KeyListener, ComponentListener
 			salidaCMD.append(mensaje + System.lineSeparator());
 		}
 		
+	}
+	
+	public void actionPerformed(ActionEvent e) {
+		Guardar_Cargar metodo = new Guardar_Cargar(); 
+		if (e.getActionCommand().equals("botonCopiar")) {
+			String mensaje = metodo.Guardar();
+			salidaCMD.append(mensaje + System.lineSeparator());
+		}
+		else if(e.getActionCommand().equals("botonCargar")) {
+			String mensaje = metodo.Cargar(entrada.getText());
+			salidaCMD.append(mensaje + System.lineSeparator());
+		}
 	}
 
 	@Override

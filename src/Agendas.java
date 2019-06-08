@@ -1,14 +1,25 @@
+import java.io.BufferedWriter;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
+import java.io.Writer;
+import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 import java.util.TreeMap;
 
 
-public class Agendas extends TreeMap<String, String>{
+public class Agendas {
 
 	private static final long serialVersionUID = 1L;
-
+	private Map <String, String> mapa = new TreeMap<String, String>();
+	
+	
 	public String ejecutar(String cmd) {
 		Scanner s = new Scanner(cmd);
+		Guardar_Cargar Guardar_Cargar = new Guardar_Cargar();
 		int estado = 0;
 		String mensaje = "";
 		String token;
@@ -19,10 +30,18 @@ public class Agendas extends TreeMap<String, String>{
 			case 0:
 				try {
 					mensaje = cmd;
-					token = s.skip("buscar|\\p{L}+(\\s+\\p{L}+)*").match().group();
+					token = s.skip("buscar|cargar|guardar|\\p{L}+(\\s+\\p{L}+)*").match().group();
 					if (token.equals("buscar")) {
 						estado = 2;
 						
+					}
+					else if(token.equals("cargar")) {
+						mensaje = Guardar_Cargar.Cargar(cmd);
+						estado= 5;
+					}
+					 else if(token.equals("guardar")) {
+						mensaje = Guardar_Cargar.Guardar();
+						estado =5;
 					}
 					else {
 						nombre = token;
@@ -54,25 +73,25 @@ public class Agendas extends TreeMap<String, String>{
 			case 3:
 				try {
 					token = s.skip("\\d{9}").match().group();
-					if (containsKey(nombre)) {
+					if (mapa.containsKey(nombre)) {
 						mensaje = nombre + " Ya esta esta en la agenda, se modificaran los nuevos datos ";
-						put(nombre,token);
+						mapa.put(nombre,token);
 					}
 					else {
-					put(nombre, token);
+					mapa.put(nombre, token);
 					estado = 5;
 					mensaje = "El telefono de " + nombre + " fue GUARDADO CORRECTAMENTE ";
 					}
 					
 				}catch (NoSuchElementException e) {
-					mensaje = "Se esperaba un teléfono";
+					mensaje = "Se esperaba un telÃ©fono";
 					estado = 5;
 				}
 				break;
 			case 4:
 				try {
 					token = s.skip("\\p{L}+(\\s+\\p{L}+)*").match().group();
-					String telefono = get(token);
+					String telefono = mapa.get(token);
 					if (telefono != null)
 						mensaje = token + " -> " + telefono;
 					else
@@ -83,9 +102,26 @@ public class Agendas extends TreeMap<String, String>{
 					estado = 5;
 				}
 				break;
+			
 			}
 		}
 		return mensaje;
+	}
+
+
+	public Map<String, String> getMapa() {
+		
+		return mapa;
+	}
+
+
+	public void setMapa(String nombre, String telefono) {
+		 mapa.put(nombre,telefono);
+	}
+	
+	public String sacarClave(String nombre) {
+		
+		return mapa.get(nombre);
 	}
 	
 }
