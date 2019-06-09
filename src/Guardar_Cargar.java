@@ -55,6 +55,8 @@ public class Guardar_Cargar {
 		
 	}
 
+	
+	
 	public String Cargar(String pregunta) {
 		String mensaje = "";
 		Agendas mapa = new Agendas();
@@ -95,7 +97,7 @@ public class Guardar_Cargar {
 			
 
 
-					pregunta = r.nextLine();
+				//	pregunta = r.nextLine();
 
 					if (pregunta.contains("1")) {
 						mensaje = "El teléfono que estaba en la Agenda ha sido guardado con exito";
