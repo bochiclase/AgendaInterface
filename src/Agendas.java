@@ -1,4 +1,5 @@
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -19,7 +20,6 @@ public class Agendas {
 	
 	public String ejecutar(String cmd) {
 		Scanner s = new Scanner(cmd);
-		Guardar_Cargar Guardar_Cargar = new Guardar_Cargar();
 		int estado = 0;
 		String mensaje = "";
 		String token;
@@ -30,25 +30,101 @@ public class Agendas {
 			case 0:
 				try {
 					mensaje = cmd;
-					token = s.skip("buscar|cargar|guardar|\\p{L}+(\\s+\\p{L}+)*").match().group();
+					token = s.skip("buscar|cargar|guardar|borrar:|\\p{L}+(\\s+\\p{L}+)*").match().group();
 					if (token.equals("buscar")) {
 						estado = 2;
 						
 					}
 					else if(token.equals("cargar")) {
-						mensaje = Guardar_Cargar.Cargar(cmd);
+						
+						
+						File fichero = new File("src/Recursos/contactos.txt");
+						Scanner s2 = null;
+						Scanner r = new Scanner(System.in);
+
+
+						try {
+							// Leemos el contenido del fichero
+							s2 = new Scanner(fichero);
+
+							// Leemos linea a linea el fichero
+							while (s2.hasNextLine()) {
+								String linea = s2.nextLine(); // Guardamos la linea en un String
+								String[] partes2 = linea.split("-");
+								String nombre2 = partes2[0].trim();
+								String numero2 = partes2[1].trim();
+
+							mapa.put(nombre2, numero2);
+							mensaje =  " Fue cargado con exito con exito" +  System.lineSeparator();
+							}
+
+						} catch (Exception ex) {
+							mensaje = "Mensaje: " + ex.getMessage();
+							
+						} finally {
+							// Cerramos el fichero tanto si la lectura ha sido correcta o no
+							try {
+								if (s2 != null)
+									s2.close();
+							} catch (Exception ex2) {
+								mensaje = "Mensaje 2: " + ex2.getMessage();
+								
+							}
+						}
+						
+						
+						
+						
+						
 						estado= 5;
 					}
 					 else if(token.equals("guardar")) {
-						mensaje = Guardar_Cargar.Guardar();
+						
+						 Writer out = null;
+							try {
+								out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("src/Recursos/contactos.txt"), "UTF-8"));
+
+								// Escribimos linea a linea en el fichero
+								for (Map.Entry<String, String> entry : mapa.entrySet()) {
+
+									try {
+
+										out.write(entry.getKey() + " - " + entry.getValue() + "\n");
+
+										mensaje =  " Fué guardado con exito" + System.lineSeparator();
+										
+										
+									} catch (IOException ex) {
+										mensaje = "Mensaje excepción escritura: " + ex.getMessage();
+									}
+								}
+
+							} catch (UnsupportedEncodingException | FileNotFoundException ex2) {
+								mensaje = "Mensaje error 2: " + ex2.getMessage();
+							} finally {
+								try {
+									out.close();
+								} catch (IOException ex3) {
+									mensaje = "Mensaje error cierre fichero: " + ex3.getMessage();
+								}
+							}
+						 
 						estado =5;
 					}
+					
+					 else if(token.equals("borrar:")) {
+						 token = s.skip("[\\w]*").match().group();
+						 nombre=token;
+						mapa.remove(nombre);
+						mensaje = nombre + "Borrado con exito";
+						estado = 5;
+					 }
 					else {
 						nombre = token;
 						estado = 1;
 					}
 				} catch (NoSuchElementException e) {
-					mensaje = "Se esperaba 'buscar' o un nombre";
+					mensaje = "Se esperaba 'buscar:' 'borrar:'  'guardar'  'cargar'  'nombre-telefono' ";
 					estado = 5;
 				}
 				break;
@@ -74,13 +150,13 @@ public class Agendas {
 				try {
 					token = s.skip("\\d{9}").match().group();
 					if (mapa.containsKey(nombre)) {
-						mensaje = nombre + " Ya esta esta en la agenda, se modificaran los nuevos datos ";
+						mensaje = nombre + " Ya esta esta en la agenda, se modificarán los nuevos datos ";
 						mapa.put(nombre,token);
 					}
 					else {
 					mapa.put(nombre, token);
 					estado = 5;
-					mensaje = "El telefono de " + nombre + " fue GUARDADO CORRECTAMENTE ";
+					mensaje = " GUARDADO CORRECTAMENTE ";
 					}
 					
 				}catch (NoSuchElementException e) {
@@ -109,19 +185,5 @@ public class Agendas {
 	}
 
 
-	public Map<String, String> getMapa() {
-		
-		return mapa;
-	}
-
-
-	public void setMapa(String nombre, String telefono) {
-		 mapa.put(nombre,telefono);
-	}
-	
-	public String sacarClave(String nombre) {
-		
-		return mapa.get(nombre);
-	}
 	
 }

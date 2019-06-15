@@ -98,12 +98,14 @@ public class MainWindow extends JFrame implements KeyListener, ComponentListener
 		panelSup.add(scrollPane);
 		salidaCMD.setEditable(false);
 		salidaCMD.setBackground(new Color(200, 255, 251, 90));
+		
 
 		
 		// Panel inferior CMD
 		JPanel panelInf = new JPanel(new GridLayout(1, 1));
 		panelInf.setBackground(new Color(65, 245, 231, 100));
 		entrada.addKeyListener(this);
+		//entrada.addFocusListener(true);
 		entrada.setFont(fontinf);
 		panelInf.add(entrada);
 
@@ -131,11 +133,11 @@ public class MainWindow extends JFrame implements KeyListener, ComponentListener
 		salidaCMD.append(System.getProperty("line.separator"));
 		salidaCMD.append("Para BUSCAR un NÚMERO                buscar:nombre");
 		salidaCMD.append(System.getProperty("line.separator"));
-		salidaCMD.append("Para BORRAR un NÚMERO                borrar:numero");
+		salidaCMD.append("Para BORRAR un NÚMERO                borrar:nombre");
 		salidaCMD.append(System.getProperty("line.separator"));
-		salidaCMD.append("Para GUARDAR la AGENDA                guardar:ruta");
+		salidaCMD.append("Para GUARDAR la AGENDA                guardar");
 		salidaCMD.append(System.getProperty("line.separator"));
-		salidaCMD.append("Para CARGAR la AGENDA                  cargar:ruta");
+		salidaCMD.append("Para CARGAR la AGENDA                 cargar");
 		salidaCMD.append(System.getProperty("line.separator"));
 		salidaCMD.append("Introduce");
 		salidaCMD.append(System.getProperty("line.separator"));
@@ -152,7 +154,7 @@ public class MainWindow extends JFrame implements KeyListener, ComponentListener
 	public void keyPressed(KeyEvent e) {
 
 		if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-			System.out.println("ejecutando sentencia");
+			
 			String mensaje = agenda.ejecutar(entrada.getText());
 			entrada.setText("");
 			salidaCMD.append(mensaje + System.lineSeparator());
@@ -162,17 +164,17 @@ public class MainWindow extends JFrame implements KeyListener, ComponentListener
 
 	// Orden del mouse
 
-	public void actionPerformed(ActionEvent e) {
+//	public void actionPerformed(ActionEvent e) {
 
 		
-		if (ac.equals(botonCopiar)) {
+	//	if (e.getActionCommand().equals("botonGuardar")) {
 		
-		}
+	//	}
 
 		
-		else if (e.getActionCommand().equals("botonCargar")) {
+	//	else if (e.getActionCommand().equals("botonCargar")) {
 			
-		}
+	//	}
 	
 
 	@Override
