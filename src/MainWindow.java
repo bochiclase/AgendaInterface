@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontFormatException;
 import java.awt.GridLayout;
+import java.awt.Image;
 import java.awt.event.*;
 import java.io.File;
 import java.io.IOException;
@@ -60,27 +61,39 @@ public class MainWindow extends JFrame implements KeyListener, ComponentListener
 			e.printStackTrace();
 		}
 
+	
+
+		// ICONOS
+		ImageIcon iconGuardar = new ImageIcon("src/Recursos/guardar.png");
+		ImageIcon iconCargar = new ImageIcon("src/Recursos/cargar.png");
+		ImageIcon icono = new ImageIcon("src/Recursos/agenda.png");
+		//Image guardar = iconGuardar.getImage();
+		//Image cargar = iconCargar.getImage();
+		Image image = icono.getImage();
+		
+
+				
+
 		// VENTANA
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLayout(new BorderLayout());
 		setTitle("Adrián - Interfaz Grafica");
 		addComponentListener(this);
-
-		// ICONOS
-		ImageIcon iconGuardar = new ImageIcon("/Recursos/guardar.png");
-		ImageIcon iconCargar = new ImageIcon("/Recursos/cargar.png");
-
+		setIconImage(image);
+		
 		// BOTONES
 		JPanel panelBotton = new JPanel();
 
 		JButton botonCopiar = new JButton();
 		botonCopiar.setActionCommand("botonCopiar");
 		panelBotton.add(botonCopiar);
+		botonCopiar.setIcon(iconGuardar);
 		// botonCopiar.addActionListener(this);
 
 		JButton botonCargar = new JButton();
 		botonCargar.setActionCommand("botonCargar");
 		panelBotton.add(botonCargar);
+		botonCargar.setIcon(iconCargar);
 		// botonCargar.addActionListener(this);
 
 		
@@ -137,7 +150,7 @@ public class MainWindow extends JFrame implements KeyListener, ComponentListener
 		salidaCMD.append(System.getProperty("line.separator"));
 		salidaCMD.append("Para GUARDAR la AGENDA                guardar");
 		salidaCMD.append(System.getProperty("line.separator"));
-		salidaCMD.append("Para CARGAR la AGENDA                 cargar");
+		salidaCMD.append("Para CARGAR la AGENDA                  cargar");
 		salidaCMD.append(System.getProperty("line.separator"));
 		salidaCMD.append("Introduce");
 		salidaCMD.append(System.getProperty("line.separator"));
