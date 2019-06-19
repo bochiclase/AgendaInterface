@@ -22,7 +22,7 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
 
-public class MainWindow extends JFrame implements KeyListener, ComponentListener {
+public class MainWindow extends JFrame implements KeyListener, ComponentListener, ActionListener {
 
 	private static final long serialVersionUID = 1L;
 
@@ -36,7 +36,7 @@ public class MainWindow extends JFrame implements KeyListener, ComponentListener
 
 	public MainWindow() {
 
-		// FUENTES 
+		// FUENTES
 
 		Font fontsup = null;
 		Font fontinf = null;
@@ -44,57 +44,52 @@ public class MainWindow extends JFrame implements KeyListener, ComponentListener
 		try {
 			fontsup = Font.createFont(Font.TRUETYPE_FONT, a).deriveFont(20f);
 		} catch (FontFormatException e) {
-			// TODO Auto-generated catch block
+
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+
 			e.printStackTrace();
 		}
 		InputStream b = getClass().getResourceAsStream("/Recursos/Pangolin-Regular.ttf");
 		try {
 			fontinf = Font.createFont(Font.TRUETYPE_FONT, b).deriveFont(20f);
 		} catch (FontFormatException e) {
-			// TODO Auto-generated catch block
+
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace(); 
-		}
 
-	
+			e.printStackTrace();
+		}
 
 		// ICONOS
 		ImageIcon iconGuardar = new ImageIcon("src/Recursos/guardar.png");
 		ImageIcon iconCargar = new ImageIcon("src/Recursos/cargar.png");
 		ImageIcon icono = new ImageIcon("src/Recursos/agenda.png");
-		//Image guardar = iconGuardar.getImage();
-		//Image cargar = iconCargar.getImage();
+		// Image guardar = iconGuardar.getImage();
+		// Image cargar = iconCargar.getImage();
 		Image image = icono.getImage();
-		
-
-				
 
 		// VENTANA
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLayout(new BorderLayout());
-		setTitle("Adrián - Interfaz Grafica");
+		setTitle("Adrián - Agenda GUI");
 		addComponentListener(this);
 		setIconImage(image);
-		
+
 		// BOTONES
 		JPanel panelBotton = new JPanel();
-
+		panelBotton.setBackground(new Color(255, 192, 84));
 		JButton botonCopiar = new JButton();
-		botonCopiar.setActionCommand("botonCopiar");
+		botonCopiar.setActionCommand("botonCargar");
 		panelBotton.add(botonCopiar);
-		botonCopiar.setIcon(iconGuardar);
-		// botonCopiar.addActionListener(this);
+		botonCopiar.setIcon(iconCargar);
+		botonCopiar.addActionListener(this);
 
 		JButton botonCargar = new JButton();
-		botonCargar.setActionCommand("botonCargar");
+		botonCargar.setActionCommand("botonGuardar");
 		panelBotton.add(botonCargar);
-		botonCargar.setIcon(iconCargar);
-		// botonCargar.addActionListener(this);
+		botonCargar.setIcon(iconGuardar);
+		botonCargar.addActionListener(this);
 
 		
 		
@@ -111,18 +106,15 @@ public class MainWindow extends JFrame implements KeyListener, ComponentListener
 		panelSup.add(scrollPane);
 		salidaCMD.setEditable(false);
 		salidaCMD.setBackground(new Color(200, 255, 251, 90));
-		
 
-		
 		// Panel inferior CMD
 		JPanel panelInf = new JPanel(new GridLayout(1, 1));
 		panelInf.setBackground(new Color(65, 245, 231, 100));
 		entrada.addKeyListener(this);
-		//entrada.addFocusListener(true);
+	
 		entrada.setFont(fontinf);
 		panelInf.add(entrada);
 
-		
 		// Añadir paneles a la ventana
 		add(panelBotton, BorderLayout.NORTH);
 		add(panelSup, BorderLayout.CENTER);
@@ -167,7 +159,7 @@ public class MainWindow extends JFrame implements KeyListener, ComponentListener
 	public void keyPressed(KeyEvent e) {
 
 		if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-			
+
 			String mensaje = agenda.ejecutar(entrada.getText());
 			entrada.setText("");
 			salidaCMD.append(mensaje + System.lineSeparator());
@@ -175,20 +167,22 @@ public class MainWindow extends JFrame implements KeyListener, ComponentListener
 
 	}
 
-	// Orden del mouse
+	// Orden de los botones
 
-//	public void actionPerformed(ActionEvent e) {
+	public void actionPerformed(ActionEvent e) {
 
-		
-	//	if (e.getActionCommand().equals("botonGuardar")) {
-		
-	//	}
+		String salida;
+		if (e.getActionCommand().equals("botonCargar")) {
+			salida = agenda.ejecutar("guardar");
+			salidaCMD.append(salida + System.lineSeparator());
+		}
 
-		
-	//	else if (e.getActionCommand().equals("botonCargar")) {
-			
-	//	}
-	
+		else if (e.getActionCommand().equals("botonGuardar")) {
+			salida = agenda.ejecutar("cargar");
+			salidaCMD.append(salida + System.lineSeparator());
+		}
+
+	}
 
 	@Override
 	public void keyReleased(KeyEvent e) {
@@ -219,6 +213,4 @@ public class MainWindow extends JFrame implements KeyListener, ComponentListener
 
 	}
 
-	
-	
 }
