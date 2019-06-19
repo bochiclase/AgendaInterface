@@ -36,7 +36,7 @@ public class MainWindow extends JFrame implements KeyListener, ComponentListener
 
 	public MainWindow() {
 
-		// FUENTES
+		// FUENTES 
 
 		Font fontsup = null;
 		Font fontinf = null;
@@ -58,7 +58,7 @@ public class MainWindow extends JFrame implements KeyListener, ComponentListener
 			e.printStackTrace();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			e.printStackTrace(); 
 		}
 
 	
